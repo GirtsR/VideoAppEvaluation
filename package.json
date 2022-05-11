@@ -1,0 +1,24 @@
+{
+  "name": "videoappevaluator",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ģirts Rudzišs",
+  "license": "ISC",
+  "dependencies": {
+    "@andreekeberg/imagedata": "^1.0.2",
+    "aruco-marker": "^2.0.0",
+    "commander": "^9.1.0",
+    "gifencoder": "^2.0.1",
+    "jimp": "^0.16.1",
+    "js-aruco": "^0.1.0",
+    "pixelmatch": "^5.2.1",
+    "svg-to-img": "^2.0.9"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0"
+  }
+}
