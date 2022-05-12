@@ -33,8 +33,8 @@ module.exports = {
     );
     const sampleImage = imageData.getSync(sampleFile);
 
-    // Pixel match threshold for comparison: 80% of pixels different
-    const pixelMatchThreshold = (sampleImage.width * sampleImage.height) * 0.8;
+    // Pixel match threshold for comparison: 90% of pixels different
+    const pixelMatchThreshold = (sampleImage.width * sampleImage.height) * 0.9;
     let videoStartFrame = 0;
     let videoEndFrame = 0;
 
@@ -60,8 +60,10 @@ module.exports = {
 
     // Cut video using frame intervals
     const trimmedFile = path.join(resultsDir, `${testName}_trimmed.mp4`);
+    // Note: frame indexing starts at 0. so start frame is videoStartFrame -1
+    // end_frame specifies the number of the first frame that should be dropped, so it is videoEndFrame
     await executeCommand(
-      `ffmpeg -y -i ${recordingFile} -vf "trim=start_frame=${videoStartFrame}:end_frame=${videoEndFrame},setpts=PTS-STARTPTS" ${trimmedFile}`
+      `ffmpeg -y -i ${recordingFile} -vf "trim=start_frame=${videoStartFrame - 1}:end_frame=${videoEndFrame},setpts=PTS-STARTPTS" ${trimmedFile}`
     );
 
     // Remove temporary frames directory
