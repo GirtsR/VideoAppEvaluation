@@ -9,7 +9,7 @@ const AR = require('js-aruco').AR;
 const { executeCommand } = require('../helpers/execute-command');
 
 module.exports = {
-  calculateFPS: async function (trimmedFile, resultsDir) {
+  calculateFPS: async (trimmedFile, resultsDir, testName) => {
     // Create temporary directory for storing video frames
     const framesDir = path.join(resultsDir, 'frames2');
     await fs.mkdir(framesDir, { recursive: true }, err => {
@@ -56,7 +56,7 @@ module.exports = {
       }
     }
 
-    console.log(fpsResults);
+    console.log(`FPS measurements: ${fpsResults}`);
 
     // Remove frames directory
     await fs.rm(framesDir, { recursive: true }, err => {
@@ -65,6 +65,14 @@ module.exports = {
       }
     });
 
-    return fpsResults;
+    // Write FPS results to file
+    const fpsFile = path.join(resultsDir, `${testName}_fps.json`);
+    await fs.writeFile(fpsFile, JSON.stringify(fpsResults), err => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
+
+    console.log(`FPS measurements saved to file ${fpsFile}`);
   }
 }

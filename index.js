@@ -8,6 +8,7 @@ const { recordMacVideo, recordAndroidVideo } = require('./src/record-video');
 const { trimVideo } = require('./src/trim-video');
 const { calculateFPS } = require('./src/calculate-fps');
 const { cropVideo } = require('./src/crop-video');
+const { calculateQualityScores } = require('./src/calculate-quality-scores');
 
 // Initialize command line options
 program.
@@ -38,22 +39,28 @@ async function VideoAppEvaluator () {
   // Record video
   let recordingFile;
   if (options.recordingInput !== undefined) {
-    console.log(`Recording macOS AVFoundation video device [${options.recordingInput}]`);
+    console.log(`Recording macOS AVFoundation video device [${options.recordingInput}]...`);
     recordingFile = await recordMacVideo(options.recordingInput, resultsDir, options.testName);
   } else if (options.phoneMode !== undefined) {
-    recordingFile = await recordAndroidVideo();
+    console.log(`Recording Android device screen...`);
+    recordingFile = await recordAndroidVideo(resultsDir, options.testName);
   } else {
     throw new Error('Either one of macOS recording input or phone mode CLI options were not set, exiting');
   }
 
   // Trim video padding
+  console.log('Trimming video ...');
   const trimmedFile = await trimVideo(recordingFile, resultsDir, options.testName);
 
   // Calculate video FPS
-  const fpsMetrics = await calculateFPS(trimmedFile, resultsDir, options.testName);
+  console.log('Starting FPS calculation...');
+  await calculateFPS(trimmedFile, resultsDir, options.testName);
 
   // Crop video reference area
+  console.log('Cropping video ...');
   const croppedFile = await cropVideo(trimmedFile, resultsDir, options.testName);
 
   // Evaluate video quality
+  console.log('Evaluating video quality...');
+  await calculateQualityScores(croppedFile, options.referenceFile, resultsDir, options.testName, options.phoneMode === true);
 }

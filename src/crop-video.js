@@ -13,7 +13,7 @@ function roundToEven(value) {
 }
 
 module.exports = {
-  cropVideo: async function (trimmedFile, resultsDir, testName) {
+  cropVideo: async (trimmedFile, resultsDir, testName) => {
     // Save first frame to file
     const frameFile = path.join(resultsDir, 'frame.png');
     await executeCommand(
@@ -55,7 +55,6 @@ module.exports = {
     await executeCommand(
       `ffmpeg -y -i ${trimmedFile} -vf "crop=${downscaledHorixPx}:${downscaledVertPx}:${topRightCoords.x}:${topRightCoords.y},scale=1320:880" ${croppedFile}`
     );
-    console.log(`Cropped file saved as ${croppedFile}`);
 
     // Remove first frame file
     await fs.rm(frameFile, { recursive: true }, err => {
@@ -64,6 +63,7 @@ module.exports = {
       }
     });
 
+    console.log(`Cropped video saved as ${croppedFile}`);
     return croppedFile;
   }
 }

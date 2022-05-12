@@ -9,7 +9,7 @@ const imageData = require('@andreekeberg/imagedata');
 const { executeCommand } = require('../helpers/execute-command');
 
 module.exports = {
-  trimVideo: async function (recordingFile, resultsDir, testName) {
+  trimVideo: async (recordingFile, resultsDir, testName) => {
     // Create temporary directory for storing .png format frames
     const framesDir = path.join(resultsDir, 'frames');
     await fs.mkdir(framesDir, { recursive: true }, err => {
@@ -64,8 +64,6 @@ module.exports = {
       `ffmpeg -y -i ${recordingFile} -vf "trim=start_frame=${videoStartFrame}:end_frame=${videoEndFrame},setpts=PTS-STARTPTS" ${trimmedFile}`
     );
 
-    console.log(`Trimmed video saved as ${trimmedFile}`);
-
     // Remove temporary frames directory
     await fs.rm(framesDir, { recursive: true }, err => {
       if (err) {
@@ -73,6 +71,7 @@ module.exports = {
       }
     });
 
+    console.log(`Trimmed video saved as ${trimmedFile}`);
     return trimmedFile;
   }
 };

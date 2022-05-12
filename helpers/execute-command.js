@@ -1,19 +1,28 @@
 'use strict';
 
 const childProcess = require('child_process');
+const fs = require('fs');
 
 module.exports = {
   /**
    * Executes a command on the host
    * @param {string} command - Command that needs to be executed
    * @param {string} workingDirectory - Directory where the command needs to be executed
-   * @param {boolean} verbose - set to true to enable logging for this command
-   * @returns {Promise<any>} - Resolves the Promise with the command output or rejects it with the error message of the command
+   * @param {boolean} verbose - Set to true to enable logging for this command
+   * @param {string} outputFile - Path to output for file for stdout
+   * @returns {Promise<string>} - Resolves the Promise with the command output or rejects it with the error message of the command
    */
-  executeCommand: (command, { workingDirectory = '.', verbose = false } = {}) => {
+  executeCommand: (command, { workingDirectory = '.', verbose = false, outputFile = undefined } = {}) => {
     console.log(`Executing command: ${command}`);
     return new Promise((resolve, reject) => {
       const process = childProcess.exec(command, { cwd: workingDirectory }, (error, stdout) => {
+        if (typeof outputFile !== 'undefined') {
+          fs.writeFile(outputFile, stdout, err => {
+            if (err) {
+              throw new Error(err);
+            }
+          });
+        }
         if (error) {
           reject(error);
         }
