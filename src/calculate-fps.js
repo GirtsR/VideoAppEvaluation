@@ -56,7 +56,7 @@ module.exports = {
       }
     }
 
-    console.log(`FPS measurements: ${fpsResults}`);
+    console.log(`FPS measurements: ${JSON.stringify(fpsResults)}`);
 
     // Remove frames directory
     await fs.rm(framesDir, { recursive: true }, err => {
