@@ -8,9 +8,7 @@ const AR = require('js-aruco').AR;
 
 const { executeCommand } = require('../helpers/execute-command');
 
-function roundToEven (value) {
-  return 2 * Math.round(value / 2);
-}
+const average = (array) => Math.round(array.reduce((a, b) => a + b) / array.length);
 
 async function findMarkerInFrame (downscaleFactor, trimmedFile, resultsDir) {
   const frameFile = path.join(resultsDir, 'frame.png');
@@ -67,22 +65,26 @@ module.exports = {
 
     console.log(JSON.stringify(marker));
 
-    // Get top right corner of the marker
-    const topRightCoords = marker.corners[1];
-    topRightCoords.x = roundToEven(topRightCoords.x);
-    topRightCoords.y = roundToEven(topRightCoords.y);
+    // Check right and top edge of marker: crop start coordinates
+    const cropStartCoords = {
+      x: Math.max(marker.corners[1].x, marker.corners[2].x),
+      y: Math.min(marker.corners[0].y, marker.corners[0].y)
+    };
 
     // Calculate marker size in recording
-    let markerSize = roundToEven(marker.corners[2].x - marker.corners[3].x);
-    // Round markerSize to even number
-    markerSize = 2 * Math.round(markerSize / 2);
+    let markerSize = average([
+      marker.corners[1].x - marker.corners[0].x,
+      marker.corners[2].x - marker.corners[3].x,
+      marker.corners[2].y - marker.corners[0].y,
+      marker.corners[3].y - marker.corners[1].y
+    ]);
     // const markerSize = 200;
     const expectedMarkerSize = 200;
 
     // Recording upscale factor to match reference
     const videoUpscale = expectedMarkerSize / markerSize;
 
-    console.log(`ArUco marker top right coordinates: ${JSON.stringify(topRightCoords)}`);
+    console.log(`Crop start coordinates: ${JSON.stringify(cropStartCoords)}`);
     console.log(`Marker size: ${markerSize}, upscale factor: ${videoUpscale}`);
 
     const downscaledHorixPx = Math.round(1320 / videoUpscale);
@@ -93,7 +95,7 @@ module.exports = {
     // Crop and scale to same resolution as reference
     const croppedFile = path.join(resultsDir, `${testName}_cropped.mp4`);
     await executeCommand(
-      `ffmpeg -y -i ${trimmedFile} -vf "crop=${downscaledHorixPx}:${downscaledVertPx}:${topRightCoords.x}:${topRightCoords.y},scale=1320:880" ${croppedFile}`
+      `ffmpeg -y -i ${trimmedFile} -vf "crop=${downscaledHorixPx}:${downscaledVertPx}:${cropStartCoords.x}:${cropStartCoords.y},scale=1320:880" ${croppedFile}`
     );
 
     console.log(`Cropped video saved as ${croppedFile}`);
