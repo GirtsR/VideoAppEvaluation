@@ -78,7 +78,7 @@ module.exports = {
       marker.corners[2].y - marker.corners[0].y,
       marker.corners[3].y - marker.corners[1].y
     ]);
-    // const markerSize = 200;
+
     const expectedMarkerSize = 200;
 
     // Recording upscale factor to match reference
