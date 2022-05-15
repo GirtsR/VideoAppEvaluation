@@ -33,8 +33,8 @@ module.exports = {
     );
     const sampleImage = imageData.getSync(sampleFile);
 
-    // Pixel match threshold for comparison: 90% of pixels different
-    const pixelMatchThreshold = (sampleImage.width * sampleImage.height) * 0.9;
+    // Pixel match threshold for comparison: 70% of pixels different
+    const pixelMatchThreshold = (sampleImage.width * sampleImage.height) * 0.7;
     let videoStartFrame = 0;
     let videoEndFrame = 0;
 
