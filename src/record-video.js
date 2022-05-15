@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 
 const { executeCommand } = require('../helpers/execute-command');
@@ -22,6 +23,13 @@ module.exports = {
       { verbose: false }
     );
 
+    // Delete .mkv video
+    await fs.rm(originalRecordingFile, { recursive: true }, err => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
+
     console.log(`Recording saved to file ${convertedRecordingFile}`);
     return convertedRecordingFile;
   },
@@ -43,6 +51,13 @@ module.exports = {
     await executeCommand(
       `ffmpeg -y -i ${rawFile} -r 30 ${convertedRecordingFile}`
     );
+
+    // Delete raw recording
+    await fs.rm(rawFile, { recursive: true }, err => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
 
     console.log(`Recording saved to file ${convertedRecordingFile}`);
     return convertedRecordingFile;
