@@ -18,7 +18,7 @@
     "jimp": "^0.16.1",
     "js-aruco": "^0.1.0",
     "pixelmatch": "^5.2.1",
-    "svg-to-img": "^2.0.9"
+    "svg2img": "^1.0.0-beta.2"
   },
   "devDependencies": {
     "eslint": "^8.11.0"

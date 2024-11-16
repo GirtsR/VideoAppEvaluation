@@ -1,6 +1,4 @@
 node_modules
 videos
 results
-*.mp4
-*.mkv
-*.y4m
+venv

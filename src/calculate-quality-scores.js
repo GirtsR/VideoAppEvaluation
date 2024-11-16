@@ -16,7 +16,7 @@ module.exports = {
     }
 
     await executeCommand(
-      `ffmpeg_quality_metrics ${degradedFile} ${referenceFile} ${commandArgs}`,
+      `ffmpeg-quality-metrics ${degradedFile} ${referenceFile} ${commandArgs}`,
       { outputFile: resultsJSON }
     );
 
