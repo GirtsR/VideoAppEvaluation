@@ -96,7 +96,7 @@ Finally, the [ffmpeg-quality-metrics](https://github.com/slhck/ffmpeg-quality-me
 VMAF, PSNR and SSIM video quality scores, comparing the cropped recording with the reference file. Quality scores are saved to 
 in a file called `${testName}_quality.json`.
 
-Example from quality results:
+Example fragment from quality results:
 
 ```json
 {
@@ -139,7 +139,6 @@ Example from quality results:
         },
     ]
 }
-[..]
     "global": {
         "vmaf": {
             "average": 68.282,
