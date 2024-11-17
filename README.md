@@ -214,7 +214,7 @@ Tests were conducted in optimal network conditions and additionally in degraded 
 Overall, results showed that Zoom provided the highest video quality and FPS between the competitors in both
 optimal (baseline network conditions).
 
-All recordings and performance metrics from the executed tests can be found [here](https://drive.google.com/drive/folders/1QG-RmArThu03Xqa6FHIXQkubpu7kByuj.
+All recordings and performance metrics from the executed tests can be found [here](https://drive.google.com/drive/folders/1QG-RmArThu03Xqa6FHIXQkubpu7kByuj).
 
 Summarised graphs from the results gathered on MacOS can be found below:
 
